@@ -26,17 +26,12 @@ import java.util.Set;
 public class GodotFilePicker extends org.godotengine.godot.plugin.GodotPlugin {
     private static final String TAG = "godot";
     private Activity activity;
-    private Context context;
-
-    private ContentResolver contentResolver;
 
     private static final int OPEN_FILE = 0;
 
     public GodotFilePicker(Godot godot) {
         super(godot);
         activity = godot.getActivity();
-        context = godot.getContext();
-        contentResolver = context.getContentResolver();
     }
 
     @NonNull
@@ -72,8 +67,8 @@ public class GodotFilePicker extends org.godotengine.godot.plugin.GodotPlugin {
                 uri = resultData.getData();
                 Log.d(TAG, "Picked file with URI: " + uri.getPath());
                 try {
-                    emitSignal("file_picked", getFile(context, uri).getPath(),
-                                contentResolver.getType(uri));
+                    emitSignal("file_picked", getFile(activity, uri).getPath(),
+                        activity.getContentResolver().getType(uri));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
