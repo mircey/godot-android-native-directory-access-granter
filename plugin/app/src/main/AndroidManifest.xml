@@ -7,18 +7,6 @@
         <meta-data
             android:name="org.godotengine.plugin.v2.GodotFilePicker"
             android:value="com.pattlebass.godotfilepicker.GodotFilePicker" />
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false"
-            android:authorities="${applicationId}"
-            tools:replace="android:authorities">
-
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_paths"
-                tools:replace="android:resource"/>
-        </provider>
     </application>
 
 </manifest>
