@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace "com.pattlebass.godotfilepicker"
+    namespace "com.pattlebass.godotdirectoryaccessgranter"
     compileSdk 34
 
     defaultConfig {

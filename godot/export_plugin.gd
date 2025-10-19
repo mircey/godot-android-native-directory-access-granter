@@ -18,7 +18,7 @@ func _exit_tree():
 
 class AndroidExportPlugin extends EditorExportPlugin:
 	# Plugin's name.
-	var _plugin_name = "AndroidFilePicker"
+	var _plugin_name = "AndroidDirectoryAccessGranter"
 
 	# Specifies which platform is supported by the plugin.
 	func _supports_platform(platform):
@@ -29,9 +29,9 @@ class AndroidExportPlugin extends EditorExportPlugin:
 	# Return the paths of the plugin's AAR binaries relative to the 'addons' directory.
 	func _get_android_libraries(platform, debug):
 		if debug:
-			return PackedStringArray(["AndroidFilePicker/app-debug.aar"])
+			return PackedStringArray(["AndroidDirectoryAccessGranter/app-debug.aar"])
 		else:
-			return PackedStringArray(["AndroidFilePicker/app-release.aar"])
+			return PackedStringArray(["AndroidDirectoryAccessGranter/app-release.aar"])
 
 	# Return the plugin's name.
 	func _get_name():

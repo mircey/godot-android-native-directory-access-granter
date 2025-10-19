@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.pattlebass.godotfilepicker">
+    package="com.pattlebass.godotdirectoryaccessgranter">
 
     <application>
         <meta-data
-            android:name="org.godotengine.plugin.v2.GodotFilePicker"
-            android:value="com.pattlebass.godotfilepicker.GodotFilePicker" />
+            android:name="org.godotengine.plugin.v2.AndroidDirectoryAccessGranter"
+            android:value="com.pattlebass.godotdirectoryaccessgranter.AndroidDirectoryAccessGranter" />
     </application>
 
 </manifest>

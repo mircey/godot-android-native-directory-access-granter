@@ -1,4 +1,4 @@
-package com.pattlebass.godotfilepicker;
+package com.pattlebass.godotdirectoryaccessgranter;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
@@ -23,13 +24,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 
-public class GodotFilePicker extends org.godotengine.godot.plugin.GodotPlugin {
+public class AndroidDirectoryAccessGranter extends org.godotengine.godot.plugin.GodotPlugin {
     private static final String TAG = "godot";
     private Activity activity;
 
     private static final int OPEN_FILE = 0;
 
-    public GodotFilePicker(Godot godot) {
+    public AndroidDirectoryAccessGranter(Godot godot) {
         super(godot);
         activity = godot.getActivity();
     }
@@ -37,7 +38,7 @@ public class GodotFilePicker extends org.godotengine.godot.plugin.GodotPlugin {
     @NonNull
     @Override
     public String getPluginName() {
-        return "GodotFilePicker";
+        return "AndroidDirectoryAccessGranter";
     }
 
     @NonNull
@@ -45,32 +46,34 @@ public class GodotFilePicker extends org.godotengine.godot.plugin.GodotPlugin {
     public Set<SignalInfo> getPluginSignals() {
         Set<SignalInfo> signals = new ArraySet<>();
 
-        signals.add(new SignalInfo("file_picked", String.class, String.class));
+        signals.add(new SignalInfo("directory_access_granted", String.class));
         return signals;
     }
 
     @UsedByGodot
-    public void openFilePicker(String type) {
-        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-        chooseFile.setType(type.isEmpty() ? "*/*" : type);
-        chooseFile = Intent.createChooser(chooseFile, "Choose a project");
-        activity.startActivityForResult(chooseFile, OPEN_FILE);
+    public void openDirectory(String pathToLoad) {
+        Intent chooseDirectory = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        //chooseFile.setType(type.isEmpty() ? "*/*" : type);
+        //chooseDirectory = Intent.createChooser(chooseDirectory, "Choose a project");
+        if(pathToLoad != null && !pathToLoad.isEmpty() && Uri.parse(pathToLoad) != null) {
+            chooseDirectory.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pathToLoad);
+        }
+        activity.startActivityForResult(chooseDirectory, OPEN_FILE); // TODO
     }
 
     @Override
     public void onMainActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == OPEN_FILE && resultCode == Activity.RESULT_OK) {
-            // The result data contains a URI for the document or directory that
+            // The result data contains a URI for the directory that
             // the user selected.
-            Uri uri = null;
+            Uri uri;
             if (resultData != null) {
                 uri = resultData.getData();
-                Log.d(TAG, "Picked file with URI: " + uri.getPath());
                 try {
-                    emitSignal("file_picked", getFile(activity, uri).getPath(),
-                        activity.getContentResolver().getType(uri));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.d(TAG, "Picked folder with URI: " + uri.getPath());
+                    emitSignal("directory_access_granted", uri.getPath());
+                } catch (NullPointerException ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -78,6 +81,7 @@ public class GodotFilePicker extends org.godotengine.godot.plugin.GodotPlugin {
 
     // From https://stackoverflow.com/questions/65447194/how-to-convert-uri-to-file-android-10
 
+    /*
     public static File getFile(Context context, Uri uri) throws IOException {
         String directoryName = context.getFilesDir().getPath() + File.separatorChar + "_temp";
         File directory = new File(directoryName);
@@ -118,4 +122,5 @@ public class GodotFilePicker extends org.godotengine.godot.plugin.GodotPlugin {
         returnCursor.close();
         return name;
     }
+    */
 }
