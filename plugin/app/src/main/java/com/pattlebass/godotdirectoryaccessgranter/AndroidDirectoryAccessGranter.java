@@ -70,8 +70,10 @@ public class AndroidDirectoryAccessGranter extends org.godotengine.godot.plugin.
             if (resultData != null) {
                 uri = resultData.getData();
                 try {
+                    Log.d(TAG, "test 1");
                     Log.d(TAG, "Picked folder with URI: " + uri.getPath());
                     emitSignal("directory_access_granted", uri.getPath());
+                    Log.d(TAG, "test 2");
                 } catch (NullPointerException ex) {
                     ex.printStackTrace();
                 }
